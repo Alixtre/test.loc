@@ -42,25 +42,17 @@ if (!empty($_POST)) {
     $password = $_POST['password'];
 
     define("ROOT_PATH", dirname(__FILE__));
-    $file = fopen(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "loginsFile.json", "r");
-    while (!feof($file)) {
-        $logins[] = json_decode(fgets($file));
-    };
-    fclose($file);
-
+    $logins = json_decode(file_get_contents(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . "loginsFile.json"));
     foreach ($logins as $value) {
         if ((trim($login) == trim($value[0])) && (trim($password) == trim($value[1]))) {
             echo $login;
 
             if (file_exists(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json")) {
-                $file = fopen(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json", "r+");
-                $tmpval = json_decode(fgets($file));
+                $tmpval = json_decode(file_get_contents(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json"));
                 $tmpval++;
-                rewind($file);
-                fputs($file, json_encode($tmpval));
+                file_put_contents(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json", $tmpval);
             } else {
-                $file = fopen(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json", "w+");
-                fputs($file, json_encode(1));
+                file_put_contents(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json", json_encode(1));
             }
             break;
         }
