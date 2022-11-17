@@ -1,0 +1,9 @@
+order deny,allow
+#deny from all
+#allow from 10.0.2.2
+#ErrorDocument 404 http://test.loc/
+#RewriteEngine On
+#RewriteCond !^ http://test.loc/
+#RewriteRule ^(.*)$ http://test.loc/ [R=301]
+php_flag display_startup_errors on
+php_flag display_errors on
