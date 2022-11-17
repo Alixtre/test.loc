@@ -50,7 +50,7 @@ if (!empty($_POST)) {
             if (file_exists(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json")) {
                 $tmpval = json_decode(file_get_contents(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json"));
                 $tmpval++;
-                file_put_contents(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json", $tmpval);
+                file_put_contents(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json", json_encode($tmpval));
             } else {
                 file_put_contents(ROOT_PATH . DIRECTORY_SEPARATOR . "Files" . DIRECTORY_SEPARATOR . trim($login) . ".json", json_encode(1));
             }
