@@ -5,6 +5,12 @@ if (empty($_SESSION['user'])) {
     header("Location: /login.php");
     die();
 }
+
+$productData = $dbConnect->query(
+    "SELECT * FROM Products
+INNER JOIN Category
+ON Products.category_id = Category.category_id"
+)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <html>
@@ -31,11 +37,6 @@ if (empty($_SESSION['user'])) {
     </thead>
     <tbody>
         <?php
-        $productData = $dbConnect->query(
-            "SELECT * FROM Products
-        INNER JOIN Category
-        ON Products.category_id = Category.category_id"
-        )->fetchAll(PDO::FETCH_ASSOC);
         foreach ($productData as $value) :
             if ($value['product_quantity'] > 0) {
                 echo '<tr>';
@@ -45,7 +46,7 @@ if (empty($_SESSION['user'])) {
         ?>
                 <td>
                     <form method="post" action="insert.php">
-                        <input type="text" name="product_id" value="<?php echo $value['product_id']?>" hidden />
+                        <input type="text" name="product_id" value="<?php echo $value['product_id'] ?>" hidden />
                         <input type="submit" name="submit" value="Добавить" class="btn btn-primary" />
                     </form>
                 </td>

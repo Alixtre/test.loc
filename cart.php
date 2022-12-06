@@ -5,6 +5,22 @@ if (empty($_SESSION['user'])) {
     header("Location: /login.php");
     die();
 }
+$stmt = $dbConnect->prepare(
+    "SELECT * FROM Cart
+INNER JOIN Products
+ON Cart.product_id = Products.product_id
+INNER JOIN Category
+ON Products.category_id = Category.category_id
+INNER JOIN Users
+ON Cart.user_id = Users.user_id
+WHERE user_email = :email"
+);
+$stmt->execute(
+    [
+        "email" => $_SESSION['user']
+    ]
+);
+$productData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <html>
@@ -31,16 +47,6 @@ if (empty($_SESSION['user'])) {
     </thead>
     <tbody>
         <?php
-        $productData = $dbConnect->query(
-            "SELECT * FROM Cart
-        INNER JOIN Products
-        ON Cart.product_id = Products.product_id
-        INNER JOIN Category
-        ON Products.category_id = Category.category_id
-        INNER JOIN Users
-        ON Cart.user_id = Users.user_id
-        WHERE user_email = \"" . $_SESSION['user'] . "\""
-        )->fetchAll(PDO::FETCH_ASSOC);
         foreach ($productData as $value) :
             if ($value['product_quantity'] > 0) {
                 echo '<tr>';
